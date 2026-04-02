@@ -1,8 +1,15 @@
-# Development dependencies
+# Development and code quality tools
 pytest==7.4.3
 black==23.12.0
 flake8==6.1.0
 mypy==1.7.1
 pylint==3.0.3
+autopep8==2.0.4
+
+# CLI and parsing
+click==8.1.7
+
+# Code analysis and optimization
+astroid==3.0.1
 
 # Project dependencies (add as needed)
