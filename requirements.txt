@@ -12,12 +12,8 @@ click==8.1.7
 # Code analysis and optimization
 astroid==3.0.1
 
-# LLM Integration - Choose one or both providers
-# OpenAI GPT API (optional)
-openai==1.6.1  # Comment out if using only Groq
-
-# Groq API (optional, free tier available)
-groq==0.4.1  # Comment out if using only OpenAI
+# LLM Integration - Groq API (free tier available)
+groq==0.4.1
 
 # Environment and configuration
 python-dotenv==1.0.0

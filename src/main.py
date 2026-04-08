@@ -13,8 +13,8 @@ Features:
 Usage:
     python -m src.main optimize <file> [--output <output_file>]
     python -m src.main analyze <file> [--verbose]
-    python -m src.main improve <file> [--provider groq|openai] [--verbose]
-    python -m src.main security <file> [--provider groq|openai] [--verbose]
+    python -m src.main improve <file> [--verbose]
+    python -m src.main security <file> [--verbose]
 """
 
 import sys
@@ -210,14 +210,13 @@ def handle_improve_command(args) -> int:
             from .prompt_templates import PromptTemplate, ChainOfThought
         except ImportError as e:
             print(f"❌ LLM integration not available: {e}")
-            print("💡 Install required packages: pip install openai groq python-dotenv")
+            print("💡 Install required packages: pip install groq python-dotenv")
             return 1
 
         # Initialize LLM
-        print(f"🤖 Initializing {args.provider.upper()} LLM...")
+        print(f"🤖 Initializing Groq LLM...")
         try:
             llm = create_llm_integrator(
-                provider=args.provider,
                 api_key=args.api_key,
                 model=args.model
             )
@@ -306,10 +305,9 @@ def handle_security_command(args) -> int:
             return 1
 
         # Initialize LLM
-        print(f"🤖 Initializing {args.provider.upper()} LLM for security review...")
+        print(f"🤖 Initializing Groq LLM for security review...")
         try:
             llm = create_llm_integrator(
-                provider=args.provider,
                 api_key=args.api_key
             )
         except ValueError as e:

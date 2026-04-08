@@ -93,24 +93,20 @@ python -m src.main improve <input_file> [options]
 
 **Options:**
 
-- `--provider {openai|groq}`: LLM provider (default: groq, free tier available)
-- `--model <model>`: Specific model to use (optional)
+- `--model <model>`: Specific Groq model to use (default: mixtral-8x7b-32768)
 - `--type {all|readability|performance|security}`: Focus area (default: all)
 - `--output, -o <file>`: Output file path (default: `<input>_improved.py`)
-- `--api-key <key>`: API key (or set env var OPENAI_API_KEY/GROQ_API_KEY)
+- `--api-key <key>`: Groq API key (or set env var GROQ_API_KEY)
 - `--verbose, -v`: Show detailed Chain of Thought analysis
 
 **Example:**
 
 ```bash
-# Using free Groq API (requires GROQ_API_KEY env var)
-python -m src.main improve messy_code.py --provider groq --verbose
-
-# Using OpenAI GPT (requires OPENAI_API_KEY env var)
-python -m src.main improve messy_code.py --provider openai --type readability
+# Using Groq API (requires GROQ_API_KEY env var)
+python -m src.main improve messy_code.py --verbose
 
 # Specific model
-python -m src.main improve messy_code.py --provider groq --model mixtral-8x7b-32768
+python -m src.main improve messy_code.py --model mixtral-8x7b-32768 --type readability
 ```
 
 #### Security Command (AI-Powered)
@@ -123,23 +119,22 @@ python -m src.main security <input_file> [options]
 
 **Options:**
 
-- `--provider {openai|groq}`: LLM provider (default: groq)
-- `--api-key <key>`: API key (or set env var)
-- `--verbose, -v`: Show detailed analysis
+- `--api-key <key>`: Groq API key (or set env var GROQ_API_KEY)
+- `--verbose, -v`: Show detailed Chain of Thought analysis
 
 **Example:**
 
 ```bash
-python -m src.main security app.py --provider groq --verbose
+python -m src.main security app.py --verbose
 ```
 
 ## AI Features Setup
 
 ### Prerequisites
 
-Clean Code Bot supports two LLM providers: **Groq** (free) and **OpenAI** (paid).
+Clean Code Bot uses **Groq** for AI-powered features (free tier available).
 
-#### Option 1: Groq (Recommended - Free Tier)
+### Setup Groq
 
 1. Sign up at [https://console.groq.com](https://console.groq.com)
 2. Get your free API key
@@ -156,30 +151,10 @@ Clean Code Bot supports two LLM providers: **Groq** (free) and **OpenAI** (paid)
    export GROQ_API_KEY="your-api-key"
    ```
 
-#### Option 2: OpenAI (Paid)
-
-1. Sign up at [https://platform.openai.com](https://platform.openai.com)
-2. Add $5+ credit to your account
-3. Get your API key from [https://platform.openai.com/api-keys](https://platform.openai.com/api-keys)
-4. Set environment variable:
-
-   ```bash
-   # Windows PowerShell
-   $env:OPENAI_API_KEY = "sk-..."
-
-   # macOS/Linux
-   export OPENAI_API_KEY="sk-..."
-   ```
-
-### Install AI Dependencies
+### Install Dependencies
 
 ```bash
-# Install both providers (recommended)
 pip install -r requirements.txt
-
-# Or install only what you need:
-pip install groq  # For Groq
-pip install openai  # For OpenAI
 ```
 
 ### Running Tests
@@ -232,7 +207,7 @@ clean-code-bot/
   - **Recommendation**: How to fix them?
 
 - **Security Analysis**: AI detects vulnerabilities and suggests secure practices
-- **Multi-Provider Support**: Use either Groq (free) or OpenAI (paid)
+- **Powered by Groq**: Free tier available, high-speed inference
 - **Input Validation**: Prevents prompt injection attacks and validates code safety
 
 ## Security & Safety
@@ -252,7 +227,7 @@ Check the [examples/](examples/) folder for before-and-after code samples:
 
 ## Troubleshooting
 
-### "No module named 'openai'" or "No module named 'groq'"
+### "No module named 'groq'"
 
 ```bash
 pip install -r requirements.txt
@@ -263,11 +238,7 @@ pip install -r requirements.txt
 Set your environment variable:
 
 ```bash
-# Groq
-$env:GROQ_API_KEY = "your-key"
-
-# OpenAI
-$env:OPENAI_API_KEY = "your-key"
+$env:GROQ_API_KEY = "your-groq-api-key"
 ```
 
 ### "High-risk input detected"

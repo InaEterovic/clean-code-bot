@@ -16,7 +16,7 @@
 - [x] Integrate all modules with main.py
 - [x] Update requirements with dependencies
 - [x] Test all CLI commands
-- [x] Implement LLM integration (OpenAI & Groq)
+- [x] Implement LLM integration (Groq)
 - [x] Create Chain of Thought prompt engineering
 - [x] Implement input validation and sanitization
 - [x] Add security/injection prevention
@@ -46,7 +46,7 @@
 
 - **Chain of Thought (CoT) Reasoning**: Structured AI analysis in 4 phases
   - Understanding, Analysis, Reasoning, Recommendation
-- **LLM Integration**: Support for both OpenAI and Groq APIs
+- **LLM Integration**: Groq API (free tier available)
 - **AI-Powered Code Improvement**: Transform code with `improve` command
 - **AI-Powered Security Review**: Vulnerability detection with `security` command
 - **Input Validation**: Size limits, encoding validation, null byte detection
@@ -58,9 +58,8 @@
 1. Create and activate virtual environment: `python -m venv venv`
 2. Activate: `venv\Scripts\activate` (Windows) or `source venv/bin/activate` (macOS/Linux)
 3. Install dependencies: `pip install -r requirements.txt`
-4. Set API key (choose one):
+4. Set API key:
    - Groq: `$env:GROQ_API_KEY = "your-key"`
-   - OpenAI: `$env:OPENAI_API_KEY = "your-key"`
 
 ## CLI Commands
 
@@ -80,16 +79,16 @@ python -m src.main optimize <file> [--output <file>] [--optimize <type>] [--add-
 
 ### AI-Powered Commands
 
-**Improve with AI (requires LLM):**
+**Improve with AI (requires Groq):**
 
 ```bash
-python -m src.main improve <file> [--provider groq|openai] [--type <type>] [--verbose]
+python -m src.main improve <file> [--type <type>] [--verbose]
 ```
 
-**Security review with AI (requires LLM):**
+**Security review with AI (requires Groq):**
 
 ```bash
-python -m src.main security <file> [--provider groq|openai] [--verbose]
+python -m src.main security <file> [--verbose]
 ```
 
 ## Project Modules
@@ -98,7 +97,7 @@ python -m src.main security <file> [--provider groq|openai] [--verbose]
 - `analyzer.py` - AST-based code quality analysis
 - `optimizer.py` - Static code optimization and refactoring
 - `documenter.py` - Docstring generation
-- `llm_integrator.py` - LLM provider abstraction (OpenAI/Groq)
+- `llm_integrator.py` - Groq LLM integration
 - `prompt_templates.py` - Chain of Thought prompt engineering
 - `security.py` - Input validation and injection prevention
 - `utils.py` - Formatting and utility functions

@@ -99,16 +99,10 @@ def create_parser() -> argparse.ArgumentParser:
         help="Output file path (default: <input>_improved.py)"
     )
     improve_parser.add_argument(
-        "--provider",
-        choices=["openai", "groq"],
-        default="groq",
-        help="LLM provider to use (default: groq)"
-    )
-    improve_parser.add_argument(
         "--model",
         type=str,
         default=None,
-        help="Specific model to use (optional)"
+        help="Specific Groq model to use (default: mixtral-8x7b-32768)"
     )
     improve_parser.add_argument(
         "--type",
@@ -126,7 +120,7 @@ def create_parser() -> argparse.ArgumentParser:
         "--api-key",
         type=str,
         default=None,
-        help="API key for LLM provider (or set env var)"
+        help="Groq API key (or set GROQ_API_KEY environment variable)"
     )
 
     # Security Review command
@@ -140,16 +134,10 @@ def create_parser() -> argparse.ArgumentParser:
         help="Path to the Python file to review"
     )
     security_parser.add_argument(
-        "--provider",
-        choices=["openai", "groq"],
-        default="groq",
-        help="LLM provider to use (default: groq)"
-    )
-    security_parser.add_argument(
         "--api-key",
         type=str,
         default=None,
-        help="API key for LLM provider (or set env var)"
+        help="Groq API key (or set GROQ_API_KEY environment variable)"
     )
     security_parser.add_argument(
         "--verbose",
