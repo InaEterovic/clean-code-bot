@@ -81,6 +81,83 @@ def create_parser() -> argparse.ArgumentParser:
         help="Show detailed analysis report"
     )
 
+    # Improve command (AI-powered)
+    improve_parser = subparsers.add_parser(
+        "improve",
+        help="AI-powered code improvement using Chain of Thought"
+    )
+    improve_parser.add_argument(
+        "input_file",
+        type=str,
+        help="Path to the Python file to improve"
+    )
+    improve_parser.add_argument(
+        "--output",
+        "-o",
+        type=str,
+        default=None,
+        help="Output file path (default: <input>_improved.py)"
+    )
+    improve_parser.add_argument(
+        "--provider",
+        choices=["openai", "groq"],
+        default="groq",
+        help="LLM provider to use (default: groq)"
+    )
+    improve_parser.add_argument(
+        "--model",
+        type=str,
+        default=None,
+        help="Specific model to use (optional)"
+    )
+    improve_parser.add_argument(
+        "--type",
+        choices=["all", "readability", "performance", "security"],
+        default="all",
+        help="Type of improvement (default: all)"
+    )
+    improve_parser.add_argument(
+        "--verbose",
+        "-v",
+        action="store_true",
+        help="Show detailed improvement report"
+    )
+    improve_parser.add_argument(
+        "--api-key",
+        type=str,
+        default=None,
+        help="API key for LLM provider (or set env var)"
+    )
+
+    # Security Review command
+    security_parser = subparsers.add_parser(
+        "security",
+        help="AI-powered security review of code"
+    )
+    security_parser.add_argument(
+        "input_file",
+        type=str,
+        help="Path to the Python file to review"
+    )
+    security_parser.add_argument(
+        "--provider",
+        choices=["openai", "groq"],
+        default="groq",
+        help="LLM provider to use (default: groq)"
+    )
+    security_parser.add_argument(
+        "--api-key",
+        type=str,
+        default=None,
+        help="API key for LLM provider (or set env var)"
+    )
+    security_parser.add_argument(
+        "--verbose",
+        "-v",
+        action="store_true",
+        help="Show detailed security analysis"
+    )
+
     return parser
 
 

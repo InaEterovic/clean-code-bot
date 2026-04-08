@@ -12,4 +12,16 @@ click==8.1.7
 # Code analysis and optimization
 astroid==3.0.1
 
-# Project dependencies (add as needed)
+# LLM Integration - Choose one or both providers
+# OpenAI GPT API (optional)
+openai==1.6.1  # Comment out if using only Groq
+
+# Groq API (optional, free tier available)
+groq==0.4.1  # Comment out if using only OpenAI
+
+# Environment and configuration
+python-dotenv==1.0.0
+
+# Additional utilities
+requests==2.31.0  # For HTTP requests
+pydantic==2.5.0  # For data validation
