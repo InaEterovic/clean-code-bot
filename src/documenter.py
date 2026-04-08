@@ -1,8 +1,4 @@
-"""
-Documentation generator module for creating comprehensive docstrings.
-
-Generates docstrings following Google style guide for functions and classes.
-"""
+"""Documentation generator module for creating comprehensive docstrings."""
 
 import ast
 import re
@@ -11,29 +7,13 @@ from pathlib import Path
 
 
 class DocstringGenerator(ast.NodeVisitor):
-    """
-    Generates comprehensive docstrings for Python code.
-
-    Follows Google style guide format for docstrings.
-    """
+    """Generates comprehensive docstrings following Google style guide."""
 
     def __init__(self, source_code: str):
-        """
-        Initialize the documentation generator.
-
-        Args:
-            source_code: The Python code to document.
-        """
         self.source_code = source_code
         self.docstrings_added: int = 0
 
     def generate(self) -> str:
-        """
-        Generate comprehensive documentation for code.
-
-        Returns:
-            str: Code with added/improved docstrings.
-        """
         try:
             tree = ast.parse(self.source_code)
             documented = self._add_docstrings(tree)
@@ -42,15 +22,6 @@ class DocstringGenerator(ast.NodeVisitor):
             return self.source_code
 
     def _add_docstrings(self, tree: ast.AST) -> str:
-        """
-        Add docstrings to AST nodes and return modified code.
-
-        Args:
-            tree: AST tree to process.
-
-        Returns:
-            str: Code with added docstrings.
-        """
         lines = self.source_code.split("\n")
         insertions: List[tuple] = []  # (line_number, docstring)
 
@@ -118,15 +89,6 @@ class DocstringGenerator(ast.NodeVisitor):
         return "\n".join(lines)
 
     def _generate_class_docstring(self, node: ast.ClassDef) -> Optional[str]:
-        """
-        Generate a docstring for a class.
-
-        Args:
-            node: AST ClassDef node.
-
-        Returns:
-            str: Generated docstring in Google style format.
-        """
         lines = ['"""', f"Class: {node.name}", ""]
 
         lines.append("Brief description of the class purpose and usage.")
@@ -161,16 +123,6 @@ def add_documentation(source_code: str) -> str:
 
 
 def document_file(input_path: Path, output_path: Optional[Path] = None) -> Tuple[str, int]:
-    """
-    Add documentation to a Python file.
-
-    Args:
-        input_path: Path to the input file.
-        output_path: Path to save documented code (optional).
-
-    Returns:
-        Tuple of (documented_code, number_of_docstrings_added).
-    """
     with open(input_path, "r", encoding="utf-8") as f:
         source_code = f.read()
 

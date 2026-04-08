@@ -1,8 +1,4 @@
-"""
-Prompt engineering module using Chain of Thought (CoT) technique.
-
-Provides prompt templates and CoT reasoning for AI-powered code analysis and optimization.
-"""
+"""Prompt engineering module using Chain of Thought (CoT) technique."""
 
 from typing import Dict, List, Optional
 from enum import Enum
@@ -17,15 +13,7 @@ class AnalysisPhase(Enum):
 
 
 class PromptTemplate:
-    """
-    Base class for prompt templates using Chain of Thought technique.
-
-    The CoT approach guides the AI to:
-    1. Understand the code
-    2. Analyze issues
-    3. Reason about solutions
-    4. Recommend improvements
-    """
+    """Base class for prompt templates using Chain of Thought technique."""
 
     COT_PREFIX = """You are an expert Python code reviewer and refactor specialist.
 Use the following Chain of Thought (CoT) approach to analyze and improve code:
@@ -47,16 +35,6 @@ Be concise but thorough. Provide concrete examples and code snippets."""
 
     @staticmethod
     def code_analysis_prompt(code: str, language: str = "python") -> str:
-        """
-        Generate a code analysis prompt using CoT.
-
-        Args:
-            code: The source code to analyze.
-            language: Programming language (default: python).
-
-        Returns:
-            str: Formatted prompt for LLM.
-        """
         return f"""{PromptTemplate.COT_PREFIX}
 
 Now, analyze this {language} code using the CoT approach:
@@ -83,16 +61,6 @@ Format improvements as actionable code snippets."""
 
     @staticmethod
     def code_improvement_prompt(code: str, improvement_type: str = "all") -> str:
-        """
-        Generate a code improvement prompt using CoT.
-
-        Args:
-            code: The source code to improve.
-            improvement_type: Type of improvement (all, readability, performance, security).
-
-        Returns:
-            str: Formatted prompt for LLM.
-        """
         focus_areas = {
             "all": "readability, performance, SOLID principles, and security",
             "readability": "naming conventions, structure, and clarity",
@@ -132,16 +100,6 @@ Important:
 
     @staticmethod
     def documentation_prompt(code: str, existing_docs: Optional[str] = None) -> str:
-        """
-        Generate a documentation improvement prompt using CoT.
-
-        Args:
-            code: The source code to document.
-            existing_docs: Existing documentation (if any).
-
-        Returns:
-            str: Formatted prompt for LLM.
-        """
         docs_context = f"\nExisting documentation:\n{existing_docs}\n" if existing_docs else ""
 
         return f"""{PromptTemplate.COT_PREFIX}
@@ -175,16 +133,6 @@ Documentation requirements:
 
     @staticmethod
     def refactoring_prompt(code: str, issues: List[str]) -> str:
-        """
-        Generate a refactoring prompt using CoT based on identified issues.
-
-        Args:
-            code: The source code to refactor.
-            issues: List of identified issues to address.
-
-        Returns:
-            str: Formatted prompt for LLM.
-        """
         issues_str = "\n".join(f"- {issue}" for issue in issues)
 
         return f"""{PromptTemplate.COT_PREFIX}
@@ -220,15 +168,6 @@ Ensure:
 
     @staticmethod
     def security_review_prompt(code: str) -> str:
-        """
-        Generate a security review prompt using CoT.
-
-        Args:
-            code: The source code to review for security.
-
-        Returns:
-            str: Formatted prompt for LLM.
-        """
         return f"""{PromptTemplate.COT_PREFIX}
 
 Perform a security review of this Python code and identify vulnerabilities.
@@ -261,27 +200,10 @@ Focus on:
 
 
 class ChainOfThought:
-    """
-    Implements Chain of Thought reasoning for code analysis.
-    
-    Guides the AI through structured thinking:
-    1. Understanding - What does the code do?
-    2. Analysis - What are the issues?
-    3. Reasoning - Why do they matter?
-    4. Recommendation - How to fix them?
-    """
+    """Implements Chain of Thought reasoning for code analysis."""
 
     @staticmethod
     def extract_cot_phases(response: str) -> Dict[AnalysisPhase, str]:
-        """
-        Extract different CoT phases from LLM response.
-
-        Args:
-            response: The LLM response containing CoT analysis.
-
-        Returns:
-            Dict mapping AnalysisPhase to content.
-        """
         phases = {}
         current_phase = None
         content = ""

@@ -1,9 +1,4 @@
-"""
-Code optimizer module for refactoring and improving code quality.
-
-Applies SOLID principles, improves readability, adds type hints,
-and optimizes Python code for better maintainability.
-"""
+"""Code optimizer module for refactoring and improving code quality."""
 
 import ast
 import re
@@ -12,19 +7,9 @@ from pathlib import Path
 
 
 class CodeOptimizer(ast.NodeTransformer):
-    """
-    Optimizes Python code by applying refactoring patterns.
-
-    Focuses on SOLID principles, readability, and performance.
-    """
+    """Optimizes Python code by applying refactoring patterns."""
 
     def __init__(self, source_code: str):
-        """
-        Initialize the optimizer.
-
-        Args:
-            source_code: The Python code to optimize.
-        """
         self.source_code = source_code
         self.optimizations_applied: List[str] = []
         self.optimize_types = ["solid", "performance", "readability"]
@@ -35,20 +20,8 @@ class CodeOptimizer(ast.NodeTransformer):
         add_types: bool = False,
         format_code: bool = False,
     ) -> str:
-        """
-        Apply optimizations to the code.
-
-        Args:
-            optimization_type: Type of optimization ("all", "solid", "performance", "readability").
-            add_types: Whether to add type hints.
-            format_code: Whether to format code.
-
-        Returns:
-            str: Optimized code.
-        """
         optimized = self.source_code
 
-        # Apply various optimizations
         optimized = self._optimize_readability(optimized)
         optimized = self._optimize_naming(optimized)
         optimized = self._add_missing_docstrings(optimized)
@@ -62,15 +35,6 @@ class CodeOptimizer(ast.NodeTransformer):
         return optimized
 
     def _optimize_readability(self, code: str) -> str:
-        """
-        Apply readability optimizations.
-
-        Args:
-            code: Source code to optimize.
-
-        Returns:
-            str: Optimized code.
-        """
         lines = code.split("\n")
         optimized_lines = []
 
@@ -94,15 +58,6 @@ class CodeOptimizer(ast.NodeTransformer):
         return "\n".join(optimized_lines)
 
     def _optimize_naming(self, code: str) -> str:
-        """
-        Improve variable and function naming conventions.
-
-        Args:
-            code: Source code to optimize.
-
-        Returns:
-            str: Optimized code.
-        """
         # Convert camelCase to snake_case for variables
         patterns = [
             (r"\b([a-z])([a-z0-9]*?)([A-Z])([a-z0-9]*?)\b", self._to_snake_case),
@@ -114,15 +69,6 @@ class CodeOptimizer(ast.NodeTransformer):
         return optimized
 
     def _add_missing_docstrings(self, code: str) -> str:
-        """
-        Add docstrings to functions and classes without them.
-
-        Args:
-            code: Source code to optimize.
-
-        Returns:
-            str: Code with added docstrings.
-        """
         lines = code.split("\n")
         optimized_lines = []
         i = 0
@@ -154,15 +100,6 @@ class CodeOptimizer(ast.NodeTransformer):
         return "\n".join(optimized_lines)
 
     def _add_type_hints(self, code: str) -> str:
-        """
-        Add type hints to functions.
-
-        Args:
-            code: Source code to optimize.
-
-        Returns:
-            str: Code with type hints.
-        """
         # Simple pattern-based approach for common type hints
         lines = code.split("\n")
         optimized_lines = []
@@ -180,15 +117,6 @@ class CodeOptimizer(ast.NodeTransformer):
         return "\n".join(optimized_lines)
 
     def _format_code(self, code: str) -> str:
-        """
-        Apply formatting to code (black style).
-
-        Args:
-            code: Source code to format.
-
-        Returns:
-            str: Formatted code.
-        """
         lines = code.split("\n")
         formatted_lines = []
 
@@ -203,7 +131,6 @@ class CodeOptimizer(ast.NodeTransformer):
 
     @staticmethod
     def _to_snake_case(match) -> str:
-        """Convert camelCase match to snake_case."""
         return match.group(1) + match.group(2) + "_" + match.group(3).lower() + match.group(4)
 
 
@@ -214,19 +141,6 @@ def optimize_file(
     add_types: bool = False,
     format_code: bool = False,
 ) -> Tuple[str, List[str]]:
-    """
-    Optimize a Python file.
-
-    Args:
-        input_path: Path to the input file.
-        output_path: Path to save optimized code (optional).
-        optimization_type: Type of optimization to apply.
-        add_types: Whether to add type hints.
-        format_code: Whether to format code.
-
-    Returns:
-        Tuple of (optimized_code, list_of_optimizations_applied).
-    """
     with open(input_path, "r", encoding="utf-8") as f:
         source_code = f.read()
 

@@ -1,21 +1,4 @@
-"""
-Clean Code Bot - Main CLI Entry Point
-
-A command-line tool that transforms dirty or undocumented code into clean,
-optimized code following SOLID principles with comprehensive documentation.
-
-Features:
-- Static analysis and optimization
-- AI-powered improvements using Chain of Thought
-- Security vulnerability detection
-- Comprehensive documentation generation
-
-Usage:
-    python -m src.main optimize <file> [--output <output_file>]
-    python -m src.main analyze <file> [--verbose]
-    python -m src.main improve <file> [--verbose]
-    python -m src.main security <file> [--verbose]
-"""
+"""Clean Code Bot - Main CLI Entry Point"""
 
 import sys
 from pathlib import Path
@@ -36,30 +19,18 @@ from .utils import (
 
 
 def handle_optimize_command(args) -> int:
-    """
-    Handle the optimize command.
-
-    Args:
-        args: Parsed command-line arguments.
-
-    Returns:
-        int: Exit code (0 for success, 1 for error).
-    """
     try:
         input_file = validate_input_file(args.input_file)
     except (FileNotFoundError, ValueError) as e:
         print(f"Error: {e}")
         return 1
 
-    # Determine output file
     output_file = args.output or generate_output_filename(args.input_file)
 
     try:
-        # Read source code
         with open(input_file, "r", encoding="utf-8") as f:
             source_code = f.read()
 
-        # Optimize code
         optimized_code, optimizations = optimize_file(
             input_file,
             Path(output_file),
@@ -68,14 +39,9 @@ def handle_optimize_command(args) -> int:
             format_code=args.format,
         )
 
-        # Add documentation
         documented_code = add_documentation(optimized_code)
-
-        # Write output
         with open(output_file, "w", encoding="utf-8") as f:
             f.write(documented_code)
-
-        # Print summary
         if args.verbose:
             print_optimization_summary(
                 str(input_file),
@@ -97,15 +63,6 @@ def handle_optimize_command(args) -> int:
 
 
 def handle_analyze_command(args) -> int:
-    """
-    Handle the analyze command.
-
-    Args:
-        args: Parsed command-line arguments.
-
-    Returns:
-        int: Exit code (0 for success, 1 for error).
-    """
     try:
         input_file = validate_input_file(args.input_file)
     except (FileNotFoundError, ValueError) as e:
@@ -129,12 +86,6 @@ def handle_analyze_command(args) -> int:
 
 
 def main() -> int:
-    """
-    Main entry point for Clean Code Bot CLI.
-
-    Returns:
-        int: Exit code.
-    """
     args = parse_arguments()
 
     if not args.command:
@@ -162,15 +113,6 @@ def main() -> int:
 
 
 def handle_improve_command(args) -> int:
-    """
-    Handle the improve command (AI-powered).
-
-    Args:
-        args: Parsed command-line arguments.
-
-    Returns:
-        int: Exit code (0 for success, 1 for error).
-    """
     try:
         input_file = validate_input_file(args.input_file)
     except (FileNotFoundError, ValueError) as e:
@@ -185,14 +127,12 @@ def handle_improve_command(args) -> int:
         with open(input_file, "r", encoding="utf-8") as f:
             source_code = f.read()
 
-        # Validate and sanitize input
         print("🔐 Validating input for security...")
         is_valid, error_msg = InputValidator.validate_code_input(source_code)
         if not is_valid:
             print(f"❌ Validation failed: {error_msg}")
             return 1
 
-        # Check for injection attempts
         is_suspicious, patterns = PromptInjectionDetector.detect_injection_patterns(source_code)
         if is_suspicious:
             risk_level = PromptInjectionDetector.get_risk_level(source_code)
@@ -201,10 +141,8 @@ def handle_improve_command(args) -> int:
                 for pattern in patterns:
                     print(f"   - {pattern}")
 
-        # Sanitize code
         sanitized_code = InputSanitizer.prepare_for_llm(source_code)
 
-        # Import LLM integrator
         try:
             from .llm_integrator import create_llm_integrator
             from .prompt_templates import PromptTemplate, ChainOfThought
@@ -213,7 +151,6 @@ def handle_improve_command(args) -> int:
             print("💡 Install required packages: pip install groq python-dotenv")
             return 1
 
-        # Initialize LLM
         print(f"🤖 Initializing Groq LLM...")
         try:
             llm = create_llm_integrator(
@@ -226,11 +163,9 @@ def handle_improve_command(args) -> int:
             print(f"❌ LLM initialization failed: {e}")
             return 1
 
-        # Generate improvement prompt using CoT
         print("🧠 Generating Chain of Thought analysis...")
         prompt = PromptTemplate.code_improvement_prompt(sanitized_code, args.type)
 
-        # Get LLM response
         print("⏳ Waiting for AI analysis...")
         try:
             response = llm.generate(prompt)
@@ -238,16 +173,12 @@ def handle_improve_command(args) -> int:
             print(f"❌ LLM error: {e}")
             return 1
 
-        # Extract and display CoT phases
         if args.verbose:
             phases = ChainOfThought.extract_cot_phases(response)
             formatted = ChainOfThought.format_cot_analysis(phases)
             print(formatted)
 
-        # Extract improved code from response
         improved_code = extract_code_from_response(response)
-
-        # Write output
         write_output_file(output_file, improved_code)
 
         # Print summary
@@ -266,15 +197,6 @@ def handle_improve_command(args) -> int:
 
 
 def handle_security_command(args) -> int:
-    """
-    Handle the security command (AI-powered security review).
-
-    Args:
-        args: Parsed command-line arguments.
-
-    Returns:
-        int: Exit code (0 for success, 1 for error).
-    """
     try:
         input_file = validate_input_file(args.input_file)
     except (FileNotFoundError, ValueError) as e:
@@ -282,21 +204,17 @@ def handle_security_command(args) -> int:
         return 1
 
     try:
-        # Read and validate input
         with open(input_file, "r", encoding="utf-8") as f:
             source_code = f.read()
 
-        # Validate input
         print("🔐 Validating input...")
         is_valid, error_msg = InputValidator.validate_code_input(source_code)
         if not is_valid:
             print(f"❌ Validation failed: {error_msg}")
             return 1
 
-        # Sanitize
         sanitized_code = InputSanitizer.prepare_for_llm(source_code)
 
-        # Import LLM integrator
         try:
             from .llm_integrator import create_llm_integrator
             from .prompt_templates import PromptTemplate, ChainOfThought

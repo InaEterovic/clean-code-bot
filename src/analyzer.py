@@ -1,9 +1,4 @@
-"""
-Code analyzer module for identifying code quality issues.
-
-Analyzes Python code for SOLID principle violations, documentation gaps,
-complexity metrics, and other code quality issues.
-"""
+"""Code analyzer module for identifying code quality issues."""
 
 import ast
 import re
@@ -23,7 +18,6 @@ class Issue:
     suggestion: Optional[str] = None
 
     def __str__(self) -> str:
-        """String representation of the issue."""
         return f"[{self.severity.upper()}] Line {self.line_number}: {self.message}"
 
 
@@ -38,30 +32,17 @@ class AnalysisReport:
     summary: str = ""
 
     def add_issue(self, issue: Issue) -> None:
-        """Add an issue to the report."""
         self.issues.append(issue)
         self.total_issues += 1
 
     def get_issues_by_severity(self, severity: str) -> List[Issue]:
-        """Get all issues of a specific severity."""
         return [issue for issue in self.issues if issue.severity == severity]
 
 
 class CodeAnalyzer(ast.NodeVisitor):
-    """
-    Analyzes Python code for quality issues.
-
-    Uses AST (Abstract Syntax Tree) to detect violations of SOLID principles,
-    missing documentation, and other code quality problems.
-    """
+    """Analyzes Python code for quality issues using AST."""
 
     def __init__(self, source_code: str):
-        """
-        Initialize the analyzer.
-
-        Args:
-            source_code: The Python code to analyze.
-        """
         self.source_code = source_code
         self.issues: List[Issue] = []
         self.current_class: Optional[str] = None
@@ -70,17 +51,10 @@ class CodeAnalyzer(ast.NodeVisitor):
         self._build_line_map()
 
     def _build_line_map(self) -> None:
-        """Build a map of line numbers to code lines."""
         for idx, line in enumerate(self.source_code.split("\n"), start=1):
             self.line_map[idx] = line.strip()
 
     def analyze(self) -> AnalysisReport:
-        """
-        Perform code analysis.
-
-        Returns:
-            AnalysisReport: Detailed analysis report.
-        """
         try:
             tree = ast.parse(self.source_code)
             self.visit(tree)
@@ -102,7 +76,6 @@ class CodeAnalyzer(ast.NodeVisitor):
         return report
 
     def visit_FunctionDef(self, node: ast.FunctionDef) -> None:
-        """Check function definitions for issues."""
         old_function = self.current_function
         self.current_function = node.name
 
@@ -118,7 +91,6 @@ class CodeAnalyzer(ast.NodeVisitor):
                 )
             )
 
-        # Check function length (should be < 50 lines)
         func_length = node.end_lineno - node.lineno
         if func_length > 50:
             self.issues.append(
@@ -131,7 +103,6 @@ class CodeAnalyzer(ast.NodeVisitor):
                 )
             )
 
-        # Check function complexity (number of branches)
         complexity = self._calculate_cyclomatic_complexity(node)
         if complexity > 10:
             self.issues.append(
@@ -144,7 +115,6 @@ class CodeAnalyzer(ast.NodeVisitor):
                 )
             )
 
-        # Check for multiple parameters
         if len(node.args.args) > 5:
             self.issues.append(
                 Issue(
@@ -160,11 +130,9 @@ class CodeAnalyzer(ast.NodeVisitor):
         self.current_function = old_function
 
     def visit_ClassDef(self, node: ast.ClassDef) -> None:
-        """Check class definitions for issues."""
         old_class = self.current_class
         self.current_class = node.name
 
-        # Check for missing docstring
         if not ast.get_docstring(node):
             self.issues.append(
                 Issue(
@@ -176,7 +144,6 @@ class CodeAnalyzer(ast.NodeVisitor):
                 )
             )
 
-        # Count methods and attributes
         methods = [n for n in node.body if isinstance(n, ast.FunctionDef)]
         if len(methods) > 15:
             self.issues.append(

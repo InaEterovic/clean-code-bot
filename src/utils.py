@@ -93,7 +93,7 @@ def print_optimization_summary(
 
     if optimizations:
         print(f"Applied {len(optimizations)} optimization(s):")
-        for opt in set(optimizations):  # Remove duplicates for display
+        for opt in set(optimizations):
             print(f"  ✓ {opt.replace('_', ' ').title()}")
     else:
         print("No optimizations were needed.")

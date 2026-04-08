@@ -1,20 +1,10 @@
-"""
-CLI (Command Line Interface) module for Clean Code Bot.
-
-Provides argument parsing and command-line interface for code optimization.
-"""
+"""CLI module for Clean Code Bot."""
 
 import argparse
 from pathlib import Path
 
 
 def create_parser() -> argparse.ArgumentParser:
-    """
-    Create and configure the CLI argument parser.
-
-    Returns:
-        argparse.ArgumentParser: Configured argument parser for Clean Code Bot.
-    """
     parser = argparse.ArgumentParser(
         prog="clean-code-bot",
         description="Transform dirty or undocumented code into clean, optimized "
@@ -24,7 +14,6 @@ def create_parser() -> argparse.ArgumentParser:
 
     subparsers = parser.add_subparsers(dest="command", help="Available commands")
 
-    # Optimize command
     optimize_parser = subparsers.add_parser(
         "optimize",
         help="Optimize and document a Python code file"
@@ -64,7 +53,6 @@ def create_parser() -> argparse.ArgumentParser:
         help="Show detailed optimization report"
     )
 
-    # Analyze command
     analyze_parser = subparsers.add_parser(
         "analyze",
         help="Analyze a Python file for code quality issues"
@@ -81,7 +69,6 @@ def create_parser() -> argparse.ArgumentParser:
         help="Show detailed analysis report"
     )
 
-    # Improve command (AI-powered)
     improve_parser = subparsers.add_parser(
         "improve",
         help="AI-powered code improvement using Chain of Thought"
